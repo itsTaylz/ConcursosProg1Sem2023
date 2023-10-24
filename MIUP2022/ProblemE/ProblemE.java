@@ -2,57 +2,50 @@ import java.util.Scanner;
 
 public class ProblemE {
 
-    public static class Pos {
-        int x;
-        int y;
-        
-        public Pos(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public boolean equals(Object other) {
-            return other instanceof Pos pos && pos.x == this.x && pos.y == this.y;
-        }
-    }
-
-    public static int dist(Pos pos1, Pos pos2) {
-        return Math.abs(pos1.x - pos2.x) + Math.abs(pos1.y - pos2.y);
-    }
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int tests = sc.nextInt();
         for (int i = 0; i < tests; i++) {
-            int n = sc.nextInt();
-            int m = sc.nextInt();
-            int[] ns = new int[n];
-            int[] ms = new int[m];
-            for (int j = 0; j < n; j++) {
-                ns[j] = sc.nextInt();
+            int w = sc.nextInt();
+            int h = sc.nextInt();
+            int[] xs = new int[w];
+            int[] ys = new int[h];
+            for (int j = 0; j < w; j++) {
+                xs[j] = sc.nextInt();
             }
-            for (int j = 0; j < m; j++) {
-                ms[j] = sc.nextInt();
+            for (int j = 0; j < h; j++) {
+                ys[j] = sc.nextInt();
             }
-            Pos ana = new Pos(ns[0], ms[0]);
-            Pos pedro = new Pos(ns[n - 1], ms[m - 1]);
-            Pos[] allPos = new Pos[n * m];
-            int index = 0;
-            for (int nn : ns) {
-                for (int mm : ms) {
-                    allPos[index++] = new Pos(nn, mm);
+            int x1 = xs[0];
+            int y1 = ys[0];
+            int xn = xs[xs.length - 1];
+            int yn = ys[ys.length - 1];
+
+            int xbest = Integer.MAX_VALUE;
+            int diffbest = Integer.MAX_VALUE;
+            for (int j = 0; j < xs.length; j++) {
+                int x = xs[j];
+                int dist1 = Math.abs(x - x1);
+                int dist2 = Math.abs(x - xn);
+                int diff = Math.abs(dist1 - dist2);
+                if (diff < diffbest) {
+                    xbest = x;
+                    diffbest = diff;
                 }
             }
-            Pos minPos = ana;
-            int dist = dist(ana, pedro);
-            for (Pos pos : allPos) {
-                int distPos = Math.abs(dist(pos, ana) - dist(pos, pedro));
-                if (distPos < dist) {
-                    dist = distPos;
-                    minPos = pos;
+            int ybest = Integer.MAX_VALUE;
+            diffbest = Integer.MAX_VALUE;
+            for (int j = 0; j < ys.length; j++) {
+                int y = ys[j];
+                int dist1 = Math.abs(y - y1);
+                int dist2 = Math.abs(y - yn);
+                int diff = Math.abs(dist1 - dist2);
+                if (diff < diffbest) {
+                    ybest = y;
+                    diffbest = diff;
                 }
             }
-            System.out.println(minPos.x + " " + minPos.y);
+            System.out.println(xbest + " " + ybest);
         }
     }
 }
