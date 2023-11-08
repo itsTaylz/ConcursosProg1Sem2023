@@ -5,37 +5,62 @@
 #include <cstdint>
 
 
-int dijkstra(std::unordered_map<int, int>* graph, int n, int start, int end)
+// int dijkstra(std::unordered_map<int, int>* graph, int n, int start, int end)
+// {
+//     std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> queue;
+//     int dist[n];
+//     for (int i = 0; i < n; i++)
+//     {
+//         dist[i] = INT32_MAX;
+//     }
+//     bool verified[n];
+//     std::unordered_set<int> visited;
+//     dist[start] = 0;
+//     queue.push({0, start});
+//     visited.insert(start);
+//     while (!queue.empty())
+//     {
+//         int cost = queue.top().first;
+//         int node = queue.top().second;
+//         queue.pop();
+//         for (auto e : graph[node])
+//         {
+//             int nextNode = e.first;
+//             int nextCost = e.second;
+//             if (cost + nextCost < dist[nextNode])
+//             {
+//                 visited.insert(nextNode);
+//                 dist[nextNode] = cost + nextCost;
+//                 queue.push({dist[nextNode], nextNode});
+//             }
+//         }
+//     }
+//     return dist[end];
+// }
+
+void dijkstra(std::unordered_map<int, int>* graph, int* distances, int start)
 {
     std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> queue;
-    int dist[n];
-    for (int i = 0; i < n; i++)
-    {
-        dist[i] = INT32_MAX;
-    }
-    bool verified[n];
-    std::unordered_set<int> visited;
-    dist[start] = 0;
     queue.push({0, start});
-    visited.insert(start);
     while (!queue.empty())
     {
         int cost = queue.top().first;
         int node = queue.top().second;
+        if (cost < distances[node])
+        {
+            distances[node] = cost;
+        }
         queue.pop();
         for (auto e : graph[node])
         {
-            int nextNode = e.first;
+            int next = e.first;
             int nextCost = e.second;
-            if (cost + nextCost < dist[nextNode])
+            if (cost + nextCost < distances[next])
             {
-                visited.insert(nextNode);
-                dist[nextNode] = cost + nextCost;
-                queue.push({dist[nextNode], nextNode});
+                distances[next] = 
             }
         }
     }
-    return dist[end];
 }
 
 int main()
@@ -54,6 +79,12 @@ int main()
         graph[start][end] = 0;
         graph[end][start] = cost;
     }
+    int distances[q];
+    for (int i = 0; i < q; i++)
+    {
+        distances[i] = INT32_MAX;
+    }
+    dijkstra(graph, distances);
     for (int i = 0; i < t; i++)
     {
         int start, end;
